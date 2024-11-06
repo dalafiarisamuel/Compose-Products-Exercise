@@ -20,7 +20,10 @@ class ProductsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductUi> {
 
-        return when (val result = repository.getAllProducts()) {
+        val page = params.key ?: 1
+        val skip = (page - 1) * PAGE_SIZE
+
+        return when (val result = repository.getAllProducts(limit = PAGE_SIZE, skip)) {
             is Resource.Failure -> {
                 LoadResult.Error(result.error)
             }
@@ -29,10 +32,14 @@ class ProductsPagingSource(
                 val products = productsMapper.mapToUi(result.result).productUis
                 LoadResult.Page(
                     data = products,
-                    prevKey = null,
-                    nextKey = null
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = if (products.isEmpty()) null else page + 1
                 )
             }
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 30
     }
 }

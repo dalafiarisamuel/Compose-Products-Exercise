@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Products</string>
+    <string name="product_list">Product List</string>
+    <string name="no_product_to_display">Products unavailable</string>
+    <string name="an_unknown_error_occured">An unknnown error occurred</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="overview">Overview</string>
+</resources>
